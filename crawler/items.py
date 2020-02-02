@@ -12,6 +12,9 @@ class Post(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     url = scrapy.Field()
-    text = scrapy.Field()
-    adrs = scrapy.Field()
+    title = scrapy.Field()
+    address = scrapy.Field()
+    lat = scrapy.Field()
+    lng = scrapy.Field()
+
     # date = scrapy.Field()

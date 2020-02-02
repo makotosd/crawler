@@ -8,28 +8,28 @@ class ExampleSpider(scrapy.Spider):
     allowed_domains = ['zxy.work']
     start_urls = ['https://zxy.work/']
 
+    def parse_shop(self, response):
+        item = Post()
+        item['url'] = response.url
+        item['title'] = response.css('title::text').extract_first()
+        item['address'] = response.css('.googleMap::attr("data-office-address")').extract_first()
+        item['lat'] = response.css('.googleMap::attr("data-office-lat")').extract_first()
+        item['lng'] = response.css('.googleMap::attr("data-office-lng")').extract_first()
+
+        print(item['url'])
+        print(item['title'])
+        print(item['address'])
+        print(item['lat'])
+        print(item['lng'])
+        print("")
+
+
     def parse(self, response):
-        print("====> {}".format(response.url))
-        # for quote in response.css('div.quote'):
-        for quote in response.css('ul.locationsMapList li'):
-            item = Post()
-            # item['author'] = quote.css('small.author::text').extract_first()
-            item['text'] = quote.css('::text').extract_first()
-            item['url'] = quote.css('::attr("href")').extract_first()
-            # item['tags'] = quote.css('div.tags a.tag::text').extract()
+        print('拠点一覧:')
+        links = response.css('ul.locationsMapList a::attr("href")').extract()
 
-            url = response.urljoin(item['url'])
-            print("=======> {}".format(url))
-            item['adrs'] = scrapy.Request(url, callback=self.parse)
+        for link in links:
+            url = response.urljoin(link)
+            print("---    {}".format(url))
+            yield scrapy.Request(url, self.parse_shop)
 
-            yield item
-
-        for quote in response.css('div#Map__gmap'):
-            print("****** {}".format(response.url))
-
-            '''
-            < div id = "Map__gmap"
-            class ="googleMap" data-office-address="埼玉県草加市高砂2-9-1" data-office-lat="35.8287494" data-office-lng="139.8045457" >
-            </div>
-            '''
-            yield quote.css('::attr("data-office-address"')

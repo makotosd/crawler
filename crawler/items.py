@@ -13,6 +13,7 @@ class Post(scrapy.Item):
     # name = scrapy.Field()
     url = scrapy.Field()
     title = scrapy.Field()
+    desc = scrapy.Field()
     address = scrapy.Field()
     lat = scrapy.Field()
     lng = scrapy.Field()

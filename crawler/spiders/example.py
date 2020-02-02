@@ -11,17 +11,21 @@ class ExampleSpider(scrapy.Spider):
     def parse_shop(self, response):
         item = Post()
         item['url'] = response.url
-        item['title'] = response.css('title::text').extract_first()
+        item['title'] = response.css('h1.baseDetailName::text').extract_first()
+        item['desc'] = response.css('title::text').extract_first()
         item['address'] = response.css('.googleMap::attr("data-office-address")').extract_first()
         item['lat'] = response.css('.googleMap::attr("data-office-lat")').extract_first()
         item['lng'] = response.css('.googleMap::attr("data-office-lng")').extract_first()
 
         print(item['url'])
         print(item['title'])
+        print(item['desc'])
         print(item['address'])
         print(item['lat'])
         print(item['lng'])
         print("")
+
+        yield item
 
 
     def parse(self, response):

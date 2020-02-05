@@ -14,8 +14,8 @@ class ExampleSpider(scrapy.Spider):
         item['title'] = response.css('h1.baseDetailName::text').extract_first()
         item['desc'] = response.css('title::text').extract_first()
         item['address'] = response.css('.googleMap::attr("data-office-address")').extract_first()
-        item['lat'] = response.css('.googleMap::attr("data-office-lat")').extract_first()
-        item['lng'] = response.css('.googleMap::attr("data-office-lng")').extract_first()
+        item['lat'] = float(response.css('.googleMap::attr("data-office-lat")').extract_first())
+        item['lng'] = float(response.css('.googleMap::attr("data-office-lng")').extract_first())
 
         print(item['url'])
         print(item['title'])

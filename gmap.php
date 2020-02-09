@@ -16,11 +16,11 @@
 <div id="map" ></div>
 
 <script>
-      var map;
-      var marker = [];
-      var infoWindow = [];
+    var map;
+    var marker = [];
+    var infoWindow = [];
 
-      var markerData2 = [
+    var markerData2 = [
 {"url": "https://zxy.work/location/akasaka-mitsuke/", "title": "ZXY \u8d64\u5742\u898b\u9644", "desc": "\u8d64\u5742\u898b\u9644\u99c5\u5f92\u6b69\uff12\u5206\u306e\u30b5\u30c6\u30e9\u30a4\u30c8\u30aa\u30d5\u30a3\u30b9\uff5cZXY\uff08\u30b8\u30b6\u30a4\uff09\u8d64\u5742\u898b\u9644 | \u30b5\u30c6\u30e9\u30a4\u30c8\u30aa\u30d5\u30a3\u30b9\u30b5\u30fc\u30d3\u30b9\u300cZXY\u300d", "address": "\u6771\u4eac\u90fd\u6e2f\u533a\u8d64\u57423-21-12", "lat": "35.67656059999999", "lng": "139.7357568"},
 {"url": "https://zxy.work/location/saginuma/", "title": "ZXY \u9dfa\u6cbc", "desc": "\u30ad\u30c3\u30ba\u30b9\u30da\u30fc\u30b9\u4ed8\u304d\u30b5\u30c6\u30e9\u30a4\u30c8\u30aa\u30d5\u30a3\u30b9\uff5cZXY\uff08\u30b8\u30b6\u30a4\uff09\u9dfa\u6cbc | \u30b5\u30c6\u30e9\u30a4\u30c8\u30aa\u30d5\u30a3\u30b9\u30b5\u30fc\u30d3\u30b9\u300cZXY\u300d", "address": "\u795e\u5948\u5ddd\u770c\u5ddd\u5d0e\u5e02\u5bae\u524d\u533a\u9dfa\u6cbc3-1-26", "lat": "35.5783077", "lng": "139.5722294"},
 {"url": "https://zxy.work/location/gotanda/", "title": "ZXY \u4e94\u53cd\u7530", "desc": "JR\u4e94\u53cd\u7530\u99c5 \u5f92\u6b692\u5206\u306e\u30b5\u30c6\u30e9\u30a4\u30c8\u30aa\u30d5\u30a3\u30b9\uff5cZXY (\u30b8\u30b6\u30a4)\u4e94\u53cd\u7530 | \u30b5\u30c6\u30e9\u30a4\u30c8\u30aa\u30d5\u30a3\u30b9\u30b5\u30fc\u30d3\u30b9\u300cZXY\u300d", "address": "\u6771\u4eac\u90fd\u54c1\u5ddd\u533a\u6771\u4e94\u53cd\u7530 1-11-12", "lat": "35.6273223", "lng": "139.7250009"},
@@ -94,8 +94,8 @@
 {"url": "https://zxy.work/location/monzen-nakacho/", "title": "ZXY \u9580\u524d\u4ef2\u753a", "desc": "ZXY \uff08\u6771\u4eac\u90fd\u6c5f\u6771\u533a\u5bcc\u5ca11-6-3\uff09 | \u30b5\u30c6\u30e9\u30a4\u30c8\u30aa\u30d5\u30a3\u30b9\u30b5\u30fc\u30d3\u30b9\u300cZXY\u300d", "address": "\u6771\u4eac\u90fd\u6c5f\u6771\u533a\u5bcc\u5ca11-6-3", "lat": "35.6713441", "lng": "139.7966742"},
 {"url": "https://zxy.work/location/musashi-kosugi/", "title": "ZXY \u6b66\u8535\u5c0f\u6749", "desc": "\u6b66\u8535\u5c0f\u6749\u99c5 \u5f92\u6b69\uff13\u5206\u306e\u30b5\u30c6\u30e9\u30a4\u30c8\u30aa\u30d5\u30a3\u30b9\uff5cZXY (\u30b8\u30b6\u30a4)\u6b66\u8535\u5c0f\u6749 | \u30b5\u30c6\u30e9\u30a4\u30c8\u30aa\u30d5\u30a3\u30b9\u30b5\u30fc\u30d3\u30b9\u300cZXY\u300d", "address": "\u795e\u5948\u5ddd\u770c\u5ddd\u5d0e\u5e02\u4e2d\u539f\u533a\u5c0f\u6749\u753a3-13", "lat": "35.5732801", "lng": "139.6570267"}
 ];
-         
-      var markerData = [ // マーカーを立てる場所名・緯度・経度
+
+    var markerData = [ // マーカーを立てる場所名・緯度・経度
         {
              name: 'TAM 東京',
              lat: 35.6954806,
@@ -122,9 +122,9 @@
               lat: 35.696932,
               lng: 139.76543200000003
         }
-      ];
+    ];
 
-     function initMap() {
+    function initMap() {
         // 地図の作成
         var mapLatLng = new google.maps.LatLng({lat: parseFloat(markerData2[0]['lat']),
                                                 lng: parseFloat(markerData2[0]['lng'])}); // 緯度経度のデータ作成
@@ -149,13 +149,13 @@
             markerEvent(i); // マーカーにクリックイベントを追加
         }
  
-}
-// マーカーにクリックイベントを追加
-function markerEvent(i) {
-    marker[i].addListener('click', function() { // マーカーをクリックしたとき
-        infoWindow[i].open(map, marker[i]); // 吹き出しの表示
-    });
-}
+    }
+    // マーカーにクリックイベントを追加
+    function markerEvent(i) {
+        marker[i].addListener('click', function() { // マーカーをクリックしたとき
+            infoWindow[i].open(map, marker[i]); // 吹き出しの表示
+        });
+    }
 </script>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBNOZL4UsM9hT0ObUSNiiShUUeQvDMSoJI&callback=initMap" async defer></script>

@@ -17,5 +17,6 @@ class Post(scrapy.Item):
     address = scrapy.Field()
     lat = scrapy.Field()
     lng = scrapy.Field()
+    group = scrapy.Field()
 
     # date = scrapy.Field()

@@ -1,16 +1,28 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from crawler.items import Post
+import googlemaps  # pip install googlemap
+import time
 
 
 ZXY_DOMAIN = 'zxy.work'
 WORKSTYLYING_DOMAIN = 'workstyling.jp'
+APIKEYFILE='apikey.txt'
+GOOGLEAPIKEY = ''
 
 
 class ExampleSpider(scrapy.Spider):
     name = 'zxy'
     allowed_domains = [ZXY_DOMAIN, WORKSTYLYING_DOMAIN]
     start_urls = ['https://zxy.work/', 'https://mf.workstyling.jp/share/']
+
+    #
+    # goole api keyを読み込む
+    #
+    global GOOGLEAPIKEY
+    with open(APIKEYFILE) as f:
+        l = f.readlines()
+        GOOGLEAPIKEY = l[0].strip()
 
     #
     # ZXYの店舗ページのパース
@@ -54,8 +66,12 @@ class ExampleSpider(scrapy.Spider):
                 item['address'] = dd
                 break
 
-        item['lat'] = None
-        item['lng'] = None
+        gmaps = googlemaps.Client(key=GOOGLEAPIKEY)
+        result = gmaps.geocode(item['address'])
+        item['lat'] = result[0]["geometry"]["location"]["lat"]
+        item['lng'] = result[0]["geometry"]["location"]["lng"]
+        time.sleep(0.5)  # 連続してgeocodeを呼ぶと失敗するという噂。
+
         item['group'] = "workstyling"
         yield item
 

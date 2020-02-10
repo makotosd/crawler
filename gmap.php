@@ -154,11 +154,11 @@
                                                     lng: parseFloat(markerData2[i]['lng'])}); // 緯度経度のデータ作成
             // マーカーiconを決める
             if(markerData2[i]['group'] == 'zxy'){
-                markericon = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+                markericon = 'https://maps.google.com/mapfiles/ms/icons/green-dot.png'
             }else if(markerData2[i]['group'] == 'workstyling'){
-                markericon = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+                markericon = 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'
             }else{
-                markericon = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+                markericon = 'https://maps.google.com/mapfiles/ms/icons/red-dot.png'
             }
             marker[i] = new google.maps.Marker({ // マーカーの追加
                 position: markerLatLng, // マーカーを立てる位置を指定

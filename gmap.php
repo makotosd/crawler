@@ -290,13 +290,68 @@
 {"url": "https://www.newwork109.com/post/store/850", "title": "NewWork \u753a\u7530", "desc": "NewWork\u306f\u300c\u6cd5\u4eba\u5411\u3051\u4f1a\u54e1\u5236\u30b7\u30a7\u30a2\u30aa\u30d5\u30a3\u30b9\u30cd\u30c3\u30c8\u30ef\u30fc\u30af\u300d\u3067\u3059\u3002\u8907\u96d1\u5316\u3059\u308b\u74b0\u5883\u306b\u751f\u304d\u308b\u73fe\u4ee3\u4eba\u306b\u5411\u3051\u305f\u3001\u3042\u3089\u3086\u308b\u30d3\u30b8\u30cd\u30b9\u306e\u30d0\u30e9\u30f3\u30b9\u3092\u6574\u3048\u308b\u65b0\u3057\u3044\u30ef\u30fc\u30af\u30b9\u30bf\u30a4\u30eb\u306e\u63d0\u6848\u3067\u3059\u3002", "lat": "35.5430344", "lng": "139.4451207,17", "group": "newwork"}
 ];
 
+    var gmap_styles = [
+      {
+    "featureType": "administrative.land_parcel",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "administrative.neighborhood",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "poi.business",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "poi.park",
+    "elementType": "labels.text",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "road",
+    "elementType": "labels",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "water",
+    "elementType": "labels.text",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  }
+    ];
+
     function initMap() {
         // 地図の作成: 35.6823003,139.7306829
         var mapLatLng = new google.maps.LatLng({lat: 35.6823003,
                                                 lng: 139.7306829}); // 緯度経度のデータ作成
         map = new google.maps.Map(document.getElementById('map'), { // #mapに地図を埋め込む
             center: mapLatLng, // 地図の中心を指定
-            zoom: 13 // 地図のズームを指定
+            zoom: 13, // 地図のズームを指定
+            styles: gmap_styles
         });
  
         // マーカー毎の処理

@@ -11,9 +11,67 @@
         margin: 0;
         padding: 0;
       }
+
+.cp_ipcheck {
+	width: 20%;
+	margin: 2em auto;
+	text-align: left;
+}
+.cp_ipcheck input {
+	display: none;
+}
+.cp_ipcheck label {
+	position: relative;
+	display: block;
+	padding: 15px 0;
+	padding-right: 35px;
+	cursor: pointer;
+}
+.cp_ipcheck input[type='checkbox'] {
+	position: absolute;
+	visibility: hidden !important;
+}
+.cp_ipcheck input[type='checkbox'] + label:before,
+.cp_ipcheck input[type='checkbox'] + label:after {
+	position: absolute;
+	top: 50%;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
+	margin-top: -7.5px;
+	content: '';
+}
+.cp_ipcheck input[type='checkbox'] + label:before {
+	right: 0;
+	width: 30px;
+	height: 15px;
+	border: 1px solid #e4e3e1;
+	border-radius: 15px;
+	background: #ffffff;
+}
+.cp_ipcheck input[type='checkbox'] + label:after {
+	right: 15px;
+	width: 15px;
+	height: 15px;
+	-webkit-transition: all 200ms ease-out;
+	        transition: all 200ms ease-out;
+	border-radius: 50%;
+	background: #bdbdbd;
+}
+.cp_ipcheck input[type='checkbox']:checked + label:after {
+	right: 0;
+	background: #da3c41;
+}
 </style>
 
 <div id="map" ></div>
+<div class="cp_ipcheck">
+	<input type="checkbox" id="c_ch1" onchange="markervisible('zxy', this.checked)" checked />
+	<label for="c_ch1">ZXY</label><br>
+	<input type="checkbox" id="c_ch2" onchange="markervisible('workstyling', this.checked)" checked />
+	<label for="c_ch2">WorkStyling</label><br>
+	<input type="checkbox" id="c_ch3" onchange="markervisible('newwork', this.checked)" checked/>
+	<label for="c_ch3">NewWork</label><br>
+</div>
 
 <script>
     var map;
@@ -277,6 +335,16 @@
         marker[i].addListener('click', function() { // マーカーをクリックしたとき
             infoWindow[i].open(map, marker[i]); // 吹き出しの表示
         });
+    }
+</script>
+
+<script>
+    function markervisible(value, checked) {
+        for (var i = 0; i < markerData2.length; i++) {
+            if (markerData2[i]['group'] == value){
+                marker[i].setVisible(checked)
+            }
+        }
     }
 </script>
 

@@ -378,7 +378,7 @@
                 icon: markericon
             });
             infoWindow[i] = new google.maps.InfoWindow({ // 吹き出しの追加
-                content: '<div class="map">' + markerData2[i]['title'] + '</div>' // 吹き出しに表示する内容
+                content: '<div class="map">予約/詳細: <a target="_blank" href="' + markerData2[i]['url'] + '">' + markerData2[i]['title'] + '</a></div>' // 吹き出しに表示する内容
             });
  
             markerEvent(i); // マーカーにクリックイベントを追加

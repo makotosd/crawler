@@ -386,7 +386,8 @@
         }
         markerCluster = new MarkerClusterer(map, marker,
             {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
-            　ignoreHidden: true});
+            　ignoreHidden: true,
+              gridSize: 30});
 
 
     }

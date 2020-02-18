@@ -77,6 +77,7 @@
     var map;
     var marker = [];
     var infoWindow = [];
+    var markerCluster;
 
     var markerData2 = [
 {"url": "https://zxy.work/location/umeda/", "title": "ZXY \u6885\u7530", "desc": "JR\u5927\u962a\u99c5\u5f92\u6b692\u5206\uff5c\u30b7\u30a7\u30a2\u30aa\u30d5\u30a3\u30b9\u306b\u3082\u25ce | \u30b5\u30c6\u30e9\u30a4\u30c8\u30aa\u30d5\u30a3\u30b9\u30b5\u30fc\u30d3\u30b9\u300cZXY\u300d", "address": "\u5927\u962a\u5e9c\u5927\u962a\u5e02\u5317\u533a\u6885\u75301-12-17", "lat": 34.7004991, "lng": 135.4978695, "group": "zxy"},
@@ -383,7 +384,11 @@
  
             markerEvent(i); // マーカーにクリックイベントを追加
         }
- 
+        markerCluster = new MarkerClusterer(map, marker,
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
+            　ignoreHidden: true});
+
+
     }
     // マーカーにクリックイベントを追加
     function markerEvent(i) {
@@ -400,7 +405,10 @@
                 marker[i].setVisible(checked)
             }
         }
+        markerCluster.repaint();
     }
 </script>
 
+<script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js">
+</script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBNOZL4UsM9hT0ObUSNiiShUUeQvDMSoJI&callback=initMap" async defer></script>

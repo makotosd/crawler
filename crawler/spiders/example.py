@@ -9,6 +9,7 @@ import re
 ZXY_DOMAIN = 'zxy.work'
 WORKSTYLYING_DOMAIN = 'workstyling.jp'
 NEWWORK_DOMAIN = 'newwork109.com'
+STATIONWORK_DOMAIN = 'stationwork.jp'
 APIKEYFILE='apikey.txt'
 GOOGLEAPIKEY = ''
 
@@ -28,8 +29,9 @@ def unshorten_url(url):
 class ExampleSpider(scrapy.Spider):
     name = 'zxy'
     allowed_domains = [ZXY_DOMAIN, WORKSTYLYING_DOMAIN, NEWWORK_DOMAIN]
-    start_urls = ['https://zxy.work/', 'https://mf.workstyling.jp/share/', 'https://www.newwork109.com/post/station']
-    # start_urls = ['https://www.newwork109.com/post/station']
+    # start_urls = ['https://zxy.work/', 'https://mf.workstyling.jp/share/', 'https://www.newwork109.com/post/station',
+    #              'https://www.stationwork.jp/user/floor-index-before']
+    start_urls = ['https://www.stationwork.jp/user/floor-index-before']
 
     #
     # goole api keyを読み込む
@@ -148,6 +150,9 @@ class ExampleSpider(scrapy.Spider):
                 url = response.urljoin(link)
                 print("--NW   {}".format(url))
                 yield scrapy.Request(url, self.parse_newwork)
+
+        elif STATIONWORK_DOMAIN in response.url:
+            print('拠点一覧(STATION WORK)')
 
         else:
             pass

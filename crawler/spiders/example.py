@@ -10,6 +10,7 @@ ZXY_DOMAIN = 'zxy.work'
 WORKSTYLYING_DOMAIN = 'workstyling.jp'
 NEWWORK_DOMAIN = 'newwork109.com'
 STATIONWORK_DOMAIN = 'stationwork.jp'
+H1T_DOMAIN = 'h1t-web.com'
 APIKEYFILE='apikey.txt'
 GOOGLEAPIKEY = ''
 
@@ -28,10 +29,10 @@ def unshorten_url(url):
 
 class ExampleSpider(scrapy.Spider):
     name = 'zxy'
-    allowed_domains = [ZXY_DOMAIN, WORKSTYLYING_DOMAIN, NEWWORK_DOMAIN]
-    # start_urls = ['https://zxy.work/', 'https://mf.workstyling.jp/share/', 'https://www.newwork109.com/post/station',
-    #              'https://www.stationwork.jp/user/floor-index-before']
-    start_urls = ['https://www.stationwork.jp/user/floor-index-before']
+    allowed_domains = [ZXY_DOMAIN, WORKSTYLYING_DOMAIN, NEWWORK_DOMAIN, H1T_DOMAIN]
+    start_urls = ['https://zxy.work/', 'https://mf.workstyling.jp/share/', 'https://www.newwork109.com/post/station',
+                  'https://www.stationwork.jp/user/floor-index-before', 'https://www.h1t-web.com/']
+    # start_urls = ['https://www.h1t-web.com/']
 
     #
     # goole api keyを読み込む
@@ -109,6 +110,32 @@ class ExampleSpider(scrapy.Spider):
         item['group'] = "newwork"
         yield item
 
+    #
+    # NewWorkの店舗ページのパース
+    #
+    def parse_h1t(self, response):
+        item = Post()
+        item['url'] = response.url
+        item['title'] = response.css('h1.deskdetail__headline::text').extract_first()
+        item['desc'] = response.css('meta[name="description"]::attr("content")').extract_first()
+
+        '''
+              <div class="deskdetail__datawrap">
+                <dl class="deskdetail__data">
+                  <dt>住所</dt>
+                  <dd>
+                    <p>新宿区西新宿1-13-12西新宿昭和ビル9階</p>
+                  </dd>
+        '''
+        item['address'] = response.css('div.deskdetail__datawrap dl.deskdetail__data dd p::text').extract_first()
+        gmaps = googlemaps.Client(key=GOOGLEAPIKEY)
+        result = gmaps.geocode(item['address'])
+        item['lat'] = result[0]["geometry"]["location"]["lat"]
+        item['lng'] = result[0]["geometry"]["location"]["lng"]
+        time.sleep(0.5)  # 連続してgeocodeを呼ぶと失敗するという噂。
+
+        item['group'] = "h1t"
+        yield item
 
     #
     # TOPページのparse
@@ -153,6 +180,20 @@ class ExampleSpider(scrapy.Spider):
 
         elif STATIONWORK_DOMAIN in response.url:
             print('拠点一覧(STATION WORK)')
+
+        elif H1T_DOMAIN in response.url:
+            print('拠点一覧(H1T)')
+            '''
+            <div class="top__area__sp__listhead">
+            <p data-number="7">東京メトロ</p>
+            <div class="top__area__sp__listclose modal__close"><span></span><span></span></div>
+            </div><a href="../desk/desk_search1.html">H¹T新宿西口</a><a href="../desk/desk_search2.html">H¹T日本橋</a><a href="../desk/desk_search6.html">H¹T虎ノ門</a><a href="../desk/desk_search12.html">H¹T渋谷</a><a href="../desk/desk_search13.html">H¹T神保町</a></span><span>H¹T青葉台（2月下旬開業予定）</span><span>H¹T錦糸町（3月上旬開業予定）</span>
+            '''
+            links = list(set(response.css('div.top__area__sp__listinner > a::attr("href")').extract()))
+            for link in links:
+                url = response.urljoin(link)
+                print("--H1T  {}".format(url))
+                yield scrapy.Request(url, self.parse_h1t)
 
         else:
             pass

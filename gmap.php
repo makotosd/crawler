@@ -71,6 +71,8 @@
 	<label for="c_ch2">WorkStyling</label><br>
 	<input type="checkbox" id="c_ch3" onchange="markervisible('newwork', this.checked)" checked/>
 	<label for="c_ch3">NewWork</label><br>
+	<input type="checkbox" id="c_ch4" onchange="markervisible('H1T', this.checked)" checked/>
+	<label for="c_ch4">H1T</label><br>
 </div>
 
 <script>

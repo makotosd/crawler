@@ -55,14 +55,6 @@ class ExampleSpider(scrapy.Spider):
         item['lng'] = float(response.css('.googleMap::attr("data-office-lng")').extract_first())
         item['group'] = "zxy"
 
-        print(item['url'])
-        print(item['title'])
-        print(item['desc'])
-        print(item['address'])
-        print(item['lat'])
-        print(item['lng'])
-        print("")
-
         yield item
 
     #

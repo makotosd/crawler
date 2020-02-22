@@ -11,9 +11,10 @@ class CrawlerPipeline(object):
 
     def process_item(self, item, spider):
         s = str(item['lat']) + "_" + str(item['lng'])
-        if s in self.latlng:
-            item['lat'] += 0.001
-            print('location of "{}" is overlaped with "{}"'.format(item['title'], self.latlng[s]))
+        if s in self.latlng:  # 重なっていたら0.0001/0.0001度ずらす。
+            item['lat'] += 0.0001
+            item['lng'] += 0.0001
+            print('location of "{}" is overlapped with "{}"'.format(item['title'], self.latlng[s]))
         else:
             pass
         self.latlng[s] = item['title']

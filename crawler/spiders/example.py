@@ -25,7 +25,7 @@ def unshorten_url(url):
     session = requests.Session()  # so connections are recycled
     resp = session.head(url, allow_redirects=True)
     latitude, longitude = re.search(r'@(.*?),(.*?),', resp.url).groups()
-    return latitude, longitude
+    return float(latitude), float(longitude)
 
 class ExampleSpider(scrapy.Spider):
     name = 'zxy'

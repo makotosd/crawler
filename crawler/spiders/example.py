@@ -24,7 +24,7 @@ def unshorten_url(url):
     '''
     session = requests.Session()  # so connections are recycled
     resp = session.head(url, allow_redirects=True)
-    latitude, longitude = re.search(r'@(.*?),(.*?)z', resp.url).groups()
+    latitude, longitude = re.search(r'@(.*?),(.*?),', resp.url).groups()
     return latitude, longitude
 
 class ExampleSpider(scrapy.Spider):
@@ -51,8 +51,25 @@ class ExampleSpider(scrapy.Spider):
         item['title'] = response.css('h1.baseDetailName::text').extract_first()
         item['desc'] = response.css('title::text').extract_first()
         item['address'] = response.css('.googleMap::attr("data-office-address")').extract_first()
-        item['lat'] = float(response.css('.googleMap::attr("data-office-lat")').extract_first())
-        item['lng'] = float(response.css('.googleMap::attr("data-office-lng")').extract_first())
+
+        lat = response.css('.googleMap::attr("data-office-lat")').extract_first()
+        lng = response.css('.googleMap::attr("data-office-lng")').extract_first()
+        if lat == "" or lng == "":
+            gmaps = googlemaps.Client(key=GOOGLEAPIKEY)
+            result = gmaps.geocode(item['address'])
+            lat = result[0]["geometry"]["location"]["lat"]
+            lng = result[0]["geometry"]["location"]["lng"]
+        else:
+            pass
+
+        try:
+            item['lat'] = float(lat)
+            item['lng'] = float(lng)
+        except ValueError:
+            print(item)
+            print("lat: {}, lng: {}".format(lat, lng))
+            exit()
+
         item['group'] = "zxy"
 
         yield item

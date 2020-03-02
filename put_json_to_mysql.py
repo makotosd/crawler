@@ -30,19 +30,19 @@ def createDB():
     )
 
     ############################################################
-    ## table 作成
+    # table 作成
     ############################################################
-    sql = "CREATE TABLE IF NOT EXISTS queue_task (" \
-          "cc char(64) NOT NULL," \
-          "target_feature char(64) NOT NULL," \
-          "num_of_neuron int unsigned NOT NULL, " \
-          "num_train int NOT NULL," \
-          "rnn char(64) NOT NULL," \
-          "status char(64) NOT NULL," \
-          "queued_at datetime," \
-          "running_at datetime," \
-          "finished_at datetime," \
-          "PRIMARY KEY(cc, target_feature, num_of_neuron, rnn)" \
+    sql = "CREATE TABLE IF NOT EXISTS shop_info (" \
+          "url char(255) NOT NULL," \
+          "title char(128) NOT NULL," \
+          "description char(255)," \
+          "address char(255)," \
+          "lat double," \
+          "lng double," \
+          "first_entry datetime NOT NULL," \
+          "last_update datetime NOT NULL," \
+          "shop_group char(64) NOT NULL," \
+          "PRIMARY KEY(title, url)" \
           ")"
 
     psql.execute(sql, conn)

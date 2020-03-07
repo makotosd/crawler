@@ -54,20 +54,13 @@ class CrawlerPipeline(object):
             psql.execute(sql, self.conn)
             self.conn.commit()
         else:
-            # TODO: レコードにないということは新規店舗。座標を探して、Insertが必要。
-            # 確定している項目
-            sql_keys = ['url', 'title', 'first_entry', 'last_update', 'shop_group']
-            sql_vals = [item['url'], item['title'], self.now, self.now, item['group']]
-
             # description
-            if 'desc' in item:
-                sql_keys.append('description')
-                sql_vals.append(item['desc'])
+            if 'desc' not in item:
+                item['desc'] = ""
 
             # address(ほんとは確定させたい)
-            if 'address' in item:
-                sql_keys.append('address')
-                sql_vals.append(item['address'])
+            if 'address' not in item:
+                item['address'] = ""
 
             # lat, lng
             if 'lat' not in item:
@@ -75,14 +68,13 @@ class CrawlerPipeline(object):
                 result = gmaps.geocode(item['address'])
                 item['lat'] = float(result[0]["geometry"]["location"]["lat"])
                 item['lng'] = float(result[0]["geometry"]["location"]["lng"])
-            sql_keys.append('lat')
-            sql_keys.append('lng')
-            sql_vals.append(str(item['lat']))
-            sql_vals.append(str(item['lng']))
 
-            str_keys = ','.join(sql_keys)
-            str_vals = ','.join(sql_vals)  # TODO: strには"が必要
-            sql = "INSERT INTO {} ({}) VALUES ({});".format("shop_info", str_keys, str_vals)
+            keys = ",".join(['url', 'title', 'description', 'address', 'lat', 'lng',
+                             'first_entry', 'last_update', 'shop_group'])
+            values = '"%s","%s","%s", "%s", %f, %f, "%s", "%s", "%s"' % (
+                        item['url'], item['title'], item['desc'], item['address'],
+                        item['lat'], item['lng'], self.now, self.now, item['group'])
+            sql = "INSERT INTO {} ({}) VALUES ({});".format("shop_info", keys, values)
             psql.execute(sql, self.conn)
             self.conn.commit()
         '''

@@ -8,6 +8,7 @@
 from urllib.parse import urlparse
 import mysql.connector  # need to install mysql-connector-python
 import pandas.io.sql as psql  # need to install pandas
+from datetime import datetime
 
 
 class CrawlerPipeline(object):
@@ -24,6 +25,7 @@ class CrawlerPipeline(object):
             database=url.path[1:],
             password=url.password
         )
+        self.now = datetime.now().strftime("%Y/%m/%d %H:%M:%S")
 
     # デストラクタ
     def __del__(self):
@@ -35,10 +37,16 @@ class CrawlerPipeline(object):
     def process_item(self, item, spider):
         url = item['url']
         title = item['title']
-        sql = ""  # select * from shop_info;"  # TODO: urlとtitleでSQLからselectする。
+        sql = 'SELECT * FROM shop_info WHERE url="%s" AND title="%s";' % (url, title)
         result_mysql = psql.execute(sql, self.conn)
-        record = result_mysql.fetchone()
-        print(url, title, record)
+        record = result_mysql.fetchall()
+        if record is not None:
+            sql = 'UPDATE shop_info SET last_update="%s" WHERE url="%s"' % (self.now, url)
+            psql.execute(sql, self.conn)
+            self.conn.commit()
+        else:
+            # TODO: レコードにないということは新規店舗。座標を探して、Insertが必要。
+            pass
         '''
         s = str(item['lat']) + "_" + str(item['lng'])
         if s in self.latlng:  # 重なっていたら0.0001/0.0001度ずらす。

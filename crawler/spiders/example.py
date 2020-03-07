@@ -40,7 +40,7 @@ class ExampleSpider(scrapy.Spider):
     global GOOGLEAPIKEY
     with open(APIKEYFILE) as f:
         l = f.readlines()
-        GOOGLEAPIKEY = l[0].strip()
+        # GOOGLEAPIKEY = l[0].strip()
 
     #
     # ZXYの店舗ページのパース
@@ -54,6 +54,7 @@ class ExampleSpider(scrapy.Spider):
 
         lat = response.css('.googleMap::attr("data-office-lat")').extract_first()
         lng = response.css('.googleMap::attr("data-office-lng")').extract_first()
+        '''
         if lat == "" or lng == "":
             gmaps = googlemaps.Client(key=GOOGLEAPIKEY)
             result = gmaps.geocode(item['address'])
@@ -69,7 +70,7 @@ class ExampleSpider(scrapy.Spider):
             print(item)
             print("lat: {}, lng: {}".format(lat, lng))
             exit()
-
+        '''
         item['group'] = "zxy"
 
         yield item
@@ -90,13 +91,13 @@ class ExampleSpider(scrapy.Spider):
             if dt == '住所':
                 item['address'] = dd
                 break
-
+        '''
         gmaps = googlemaps.Client(key=GOOGLEAPIKEY)
         result = gmaps.geocode(item['address'])
         item['lat'] = result[0]["geometry"]["location"]["lat"]
         item['lng'] = result[0]["geometry"]["location"]["lng"]
         time.sleep(0.5)  # 連続してgeocodeを呼ぶと失敗するという噂。
-
+        '''
         item['group'] = "workstyling"
         yield item
 
@@ -114,7 +115,6 @@ class ExampleSpider(scrapy.Spider):
 
         item['lat'] = lat
         item['lng'] = lng
-        time.sleep(0.5)  # 連続してgeocodeを呼ぶと失敗するという噂。
 
         item['group'] = "newwork"
         yield item
@@ -137,12 +137,13 @@ class ExampleSpider(scrapy.Spider):
                   </dd>
         '''
         item['address'] = response.css('div.deskdetail__datawrap dl.deskdetail__data dd p::text').extract_first()
+        '''
         gmaps = googlemaps.Client(key=GOOGLEAPIKEY)
         result = gmaps.geocode(item['address'])
         item['lat'] = result[0]["geometry"]["location"]["lat"]
         item['lng'] = result[0]["geometry"]["location"]["lng"]
         time.sleep(0.5)  # 連続してgeocodeを呼ぶと失敗するという噂。
-
+        '''
         item['group'] = "h1t"
         yield item
 

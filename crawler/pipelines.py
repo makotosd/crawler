@@ -9,7 +9,18 @@
 class CrawlerPipeline(object):
     latlng = {}
 
+    # コンストラクタ
+    def __init__(self):
+        # DBとの接続
+        pass
+
+    # デストラクタ
+    def __del__(self):
+        # DBとの切断
+        pass
+
     def process_item(self, item, spider):
+        '''
         s = str(item['lat']) + "_" + str(item['lng'])
         if s in self.latlng:  # 重なっていたら0.0001/0.0001度ずらす。
             item['lat'] += 0.0001
@@ -18,5 +29,6 @@ class CrawlerPipeline(object):
         else:
             pass
         self.latlng[s] = item['title']
+        '''
 
         return item

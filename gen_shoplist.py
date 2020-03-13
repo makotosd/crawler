@@ -1,8 +1,4 @@
 # -*- coding: utf-8 -*-
-#  店舗の情報ファイル(json)を読み込んで、mysqlに初期データベースと
-#  して登録する。
-#  一回しか使わないスクリプト。
-#  今後のデータベースの更新は、scrapyから行う。
 #
 from urllib.parse import urlparse
 import mysql.connector  # need to install mysql-connector-python
